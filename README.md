@@ -18,9 +18,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: GitHub Sync to Upstream Repository
-      uses: mheene/sync-upstream-repo@v0.1.2
+      uses: dabreadman/sync-upstream-repo@v0.1.2.b
       with:
       # GitHub public upstream repo
         upstream_repo: https://github.com/holger24/AFD.git 
