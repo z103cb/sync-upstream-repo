@@ -9,6 +9,9 @@ inputs:
   branch:
     description: Branch main of merge branch
     required: false
+  token:
+    description: Github Bot token
+    required: true
 
 runs:
   using: "docker"
