@@ -28,6 +28,7 @@ cd work || { echo "Missing work dir" && exist 2 ; }
 
 git config --local user.email "action@github.com"
 git config --local user.name "GitHub Action"
+git config --local user.password ${GITHUB_TOKEN}
 
 git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 
