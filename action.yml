@@ -16,6 +16,7 @@ runs:
   args:
     - ${{ inputs.upstream_repo }}
     - ${{ inputs.branch }}
+    - ${{ inputs.token }}
 
 branding:
   icon: "git-merge"
