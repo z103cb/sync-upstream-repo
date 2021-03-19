@@ -20,7 +20,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: GitHub Sync to Upstream Repository
-      uses: dabreadman/sync-upstream-repo@v0.1.2.b
+      uses: dabreadman/sync-upstream-repo@v0.1.2.b.1
       with:
       # GitHub public upstream repo
         upstream_repo: https://github.com/holger24/AFD.git 
