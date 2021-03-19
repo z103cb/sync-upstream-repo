@@ -4,7 +4,7 @@ set -x
 
 UPSTREAM_REPO=$1
 BRANCH=$2
-
+echo GITHUB_TOKEN
 
 if [[ -z "$UPSTREAM_REPO" ]]; then
   echo "Missing \$UPSTREAM_REPO"
@@ -26,8 +26,8 @@ echo "UPSTREAM_REPO=$UPSTREAM_REPO"
 git clone "https://github.com/${GITHUB_REPOSITORY}.git" work
 cd work || { echo "Missing work dir" && exist 2 ; }
 
-git config --local user.email "action@github.com"
-git config --local user.name "GitHub Action"
+git config user.name "${GITHUB_ACTOR}"
+git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 git config --local user.password ${GITHUB_TOKEN}
 
 git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
