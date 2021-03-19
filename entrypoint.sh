@@ -3,6 +3,7 @@
 set -x
 
 UPSTREAM_REPO=$1
+BRANCH=$2
 
 
 if [[ -z "$UPSTREAM_REPO" ]]; then
@@ -10,6 +11,11 @@ if [[ -z "$UPSTREAM_REPO" ]]; then
   exit 1
 fi
 
+if [[ -z "$BRANCH" ]]; then
+  echo "Missing \$BRANCH"
+  echo "Default to main"
+  BRANCH="main"
+fi
 
 if ! echo "$UPSTREAM_REPO" | grep '\.git'; then
   UPSTREAM_REPO="https://github.com/${UPSTREAM_REPO_PATH}.git"
@@ -29,12 +35,12 @@ git remote add upstream "$UPSTREAM_REPO"
 git fetch upstream 
 git remote -v
 
-git checkout master
+git checkout ${BRANCH}
 
-MERGE_RESULT=$(git merge upstream/master)
+MERGE_RESULT=$(git merge upstream/${BRANCH})
 if [[ $MERGE_RESULT != *"Already up to date."* ]]; then
   git commit -m "Merged upstream"  
-  git push origin master
+  git push origin ${BRANCH}
 fi
 
 cd ..
