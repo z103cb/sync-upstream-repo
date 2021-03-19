@@ -1,11 +1,14 @@
 name: Sync and merge upstream repository with your current repository
-description: Syncs and merges your current repository with the upstream repository. Greatly inspired by [actions-registry/github-repo-sync-upstream]. For details see README.md
-author: Markus Heene
+description: Syncs and merges your current repository with the upstream repository. Fork of https://github.com/mheene/sync-upstream-repo.
+author: Dabreadman
 
 inputs:
   upstream_repo:
     description: URL of gitHub public upstream repo
     required: true
+  branch:
+    description: Branch main of merge branch
+    required: false
 
 runs:
   using: "docker"
