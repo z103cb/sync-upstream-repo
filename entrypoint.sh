@@ -4,7 +4,7 @@ set -x
 
 UPSTREAM_REPO=$1
 BRANCH=$2
-echo GITHUB_TOKEN
+echo ${GITHUB_TOKEN}
 
 if [[ -z "$UPSTREAM_REPO" ]]; then
   echo "Missing \$UPSTREAM_REPO"
