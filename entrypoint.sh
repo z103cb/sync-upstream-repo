@@ -43,10 +43,10 @@ git checkout ${DOWNSTREAM_BRANCH}
 
 MERGE_RESULT=$(git merge upstream/${UPSTREAM_BRANCH} ${MERGE_ARGS})
 
-if [ $MERGE_RESULT == "" ] 
+if [[ $MERGE_RESULT == "" ]] 
 then
   exit 1
-elif [ $MERGE_RESULT != *"Already up to date."* ]
+elif [[ $MERGE_RESULT != *"Already up to date."* ]]
 then
   git commit -m "Merged upstream"  
   git push origin ${DOWNSTREAM_BRANCH} ${PUSH_ARGS} || exit $?
