@@ -34,6 +34,7 @@ git remote -v
 
 git checkout ${BRANCH}
 
+git fetch upstream
 MERGE_RESULT=$(git merge upstream/${BRANCH} ${MERGE_ARGS})
 if [[ $MERGE_RESULT != *"Already up to date."* ]]; then
   git commit -m "Merged upstream"  
