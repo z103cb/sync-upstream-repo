@@ -41,7 +41,7 @@ git checkout ${BRANCH}
 MERGE_RESULT=$(git merge upstream/${BRANCH})
 if [[ $MERGE_RESULT != *"Already up to date."* ]]; then
   git commit -m "Merged upstream"  
-  git push origin ${BRANCH}
+  git push origin ${BRANCH} || exit $?
 fi
 
 cd ..
