@@ -14,38 +14,54 @@ This is forked from [mheene](https://github.com/mheene/sync-upstream-repo), with
 Example github action [here](https://github.com/THIS-IS-NOT-A-BACKUP/go-web-proxy/blob/main/.github/workflows/sync5.yml):
 
 ```YAML
-name: My_Pipeline_Name
+name: Sync Upstream
 
-### 
 env:
   # Required, URL to upstream (fork base)
   UPSTREAM_URL: "https://github.com/dabreadman/go-web-proxy.git"
   # Optional, defaults to main
-  DOWNSTREAM_BRANCH: "main"
-### 
+  UPSTREAM_BRANCH: "main"
+  # Optional, defaults to UPSTREAM_BRANCH
+  DOWNSTREAM_BRANCH: ""
+  # Optional merge arguments
+  MERGE_ARGS: ""
+  # Optional push arguments
+  PUSH_ARGS: ""
 
+# This runs every day on 1801 UTC
 on:
   schedule:
-    - cron: '30 * * * *'
+    - cron: '1 18 * * *'
+  # Allows manual workflow run (must in default branch to work)
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: GitHub Sync to Upstream Repository
-        uses: dabreadman/sync-upstream-repo@v0.1.2.b
+        uses: dabreadman/sync-upstream-repo@v1.0.0.b
         with: 
           upstream_repo: ${{ env.UPSTREAM_URL }}
-          branch: $$ env.DOWNSTREAM_BRANCH }}
-          token: ${{ secrets.GITHUB_TOKEN}}
+          upstream_branch: ${{ env.UPSTREAM_BRANCH }}
+          downstream_branch: ${{ env.DOWNSTREAM_BRANCH }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          merge_args: ${{ env.MERGE_ARGS }}
+          push_args: ${{ env.PUSH_ARGS }}
 ```
 
-This action syncs your repo (merge changes from `remote`) at branch `main` with the upstream repo ``` https://github.com/dabreadman/go-web-proxy.git ``` every 30 minutes.
+This action syncs your repo (merge changes from `remote`) at branch `main` with the upstream repo ``` https://github.com/dabreadman/go-web-proxy.git ``` every day on 1801 UTC.  
+Do note GitHub Action scheduled workflow usually face delay as it is pushed onto a queue, the delay is usually within 1 hour long.
 
-## Mechanism
+## Development
 
-1. Setup an environment using docker.
-  (Why do that when `Workflow` is inside an environment? I have no idea).
-2. Pass arguments into `entrypoint.sh`.
-3. `entrypoint.sh` does the heavy lifting.  
-  git clone, set origin/upstream, fetch, merge, push.
+In [`action.yml`](https://github.com/dabreadman/sync-upstream-repo/blob/master/action.yml), we define `inputs`.  
+We then pass these arguments into [`Dockerfile`](https://github.com/dabreadman/sync-upstream-repo/blob/master/Dockerfile), which then passed onto [`entrypoint.sh`](https://github.com/dabreadman/sync-upstream-repo/blob/master/entrypoint.sh).
+
+`entrypoint.sh` does the heavy-lifting,
+
+- Set up variables.
+- Set up git config.
+- Clone downstream repository.
+- Fetch upstream repository.
+- Attempt merge if behind, and push to downstream.
