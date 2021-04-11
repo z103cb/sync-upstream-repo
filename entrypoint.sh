@@ -3,14 +3,21 @@
 set -x
 
 UPSTREAM_REPO=$1
-BRANCH=$2
-GITHUB_TOKEN=$3
-MERGE_ARGS=$4
-PUSH_ARGS=$5
+UPSTREAM_BRANCH=$2
+DOWNSTREAM_BRANCH=$3
+GITHUB_TOKEN=$4
+MERGE_ARGS=$5
+PUSH_ARGS=$6
 
 if [[ -z "$UPSTREAM_REPO" ]]; then
   echo "Missing \$UPSTREAM_REPO"
   exit 1
+fi
+
+if [[ -z "$DOWNSTREAM_BRANCH" ]]; then
+  echo "Missing \$DOWNSTREAM_BRANCH"
+  echo "Default to ${UPSTREAM_BRANCH}"
+  DOWNSTREAM_BREANCH=UPSTREAM_BRANCH
 fi
 
 if ! echo "$UPSTREAM_REPO" | grep '\.git'; then
@@ -29,16 +36,15 @@ git config --local user.password ${GITHUB_TOKEN}
 git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 
 git remote add upstream "$UPSTREAM_REPO"
-git fetch --all
+git fetch upstream
 git remote -v
 
-git checkout ${BRANCH}
+git checkout ${DOWNSTREAM_BRANCH}
 
-git fetch upstream
-MERGE_RESULT=$(git merge upstream/${BRANCH} ${MERGE_ARGS})
+MERGE_RESULT=$(git merge upstream/${UPSTREAM_BRANCH} ${MERGE_ARGS})
 if [[ $MERGE_RESULT != *"Already up to date."* ]]; then
   git commit -m "Merged upstream"  
-  git push origin ${BRANCH} ${PUSH_ARGS} || exit $?
+  git push origin ${DOWNSTREAM_BRANCH} ${PUSH_ARGS} || exit $?
 fi
 
 cd ..
