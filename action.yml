@@ -9,9 +9,18 @@ inputs:
   branch:
     description: Branch main of merge branch
     required: false
+    default: "main"
   token:
-    description: Github Bot token
+    description: GitHub Bot token
     required: true
+  merge_args:
+    description: Git merge arguments
+    required: false
+    default: ""
+  push_args:
+    description: Git push arguments
+    required: false
+    default: ""
 
 runs:
   using: "docker"
@@ -20,6 +29,8 @@ runs:
     - ${{ inputs.upstream_repo }}
     - ${{ inputs.branch }}
     - ${{ inputs.token }}
+    - ${{ inputs.merge_args }}
+    - ${{ inputs.push_args }}
 
 branding:
   icon: "git-merge"
