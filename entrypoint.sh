@@ -41,7 +41,10 @@ git remote -v
 
 git checkout ${DOWNSTREAM_BRANCH}
 
+echo "sync-upstream-repo https://github.com/dabreadman/sync-upstream-repo keeping CI alive" >> sync-upstream-repo
+
 MERGE_RESULT=$(git merge upstream/${UPSTREAM_BRANCH} ${MERGE_ARGS})
+
 
 if [[ $MERGE_RESULT == "" ]] 
 then
