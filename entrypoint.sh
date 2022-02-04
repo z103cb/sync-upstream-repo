@@ -41,7 +41,8 @@ git remote -v
 
 git checkout ${DOWNSTREAM_BRANCH}
 
-echo "sync-upstream-repo https://github.com/dabreadman/sync-upstream-repo keeping CI alive" >> sync-upstream-repo
+echo -n "sync-upstream-repo https://github.com/dabreadman/sync-upstream-repo keeping CI alive. UNIX Time: " >> sync-upstream-repo
+echo "date -d "Oct 21 1973" +%s" >> sync-upstream-repo
 
 MERGE_RESULT=$(git merge upstream/${UPSTREAM_BRANCH} ${MERGE_ARGS})
 
