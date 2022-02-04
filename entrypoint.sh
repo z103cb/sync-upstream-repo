@@ -45,6 +45,7 @@ echo -n "sync-upstream-repo https://github.com/dabreadman/sync-upstream-repo kee
 echo "date -d "Oct 21 1973" +%s" >> sync-upstream-repo
 git add sync-upstream-repo
 git commit sync-upstream-repo -m "Syncing upstream"
+git push origin
 
 MERGE_RESULT=$(git merge upstream/${UPSTREAM_BRANCH} ${MERGE_ARGS})
 
