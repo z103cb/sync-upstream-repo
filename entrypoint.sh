@@ -6,8 +6,9 @@ UPSTREAM_REPO=$1
 UPSTREAM_BRANCH=$2
 DOWNSTREAM_BRANCH=$3
 GITHUB_TOKEN=$4
-MERGE_ARGS=$5
-PUSH_ARGS=$6
+FETCH_ARGS=$5
+MERGE_ARGS=$6
+PUSH_ARGS=$7
 
 if [[ -z "$UPSTREAM_REPO" ]]; then
   echo "Missing \$UPSTREAM_REPO"
@@ -36,7 +37,7 @@ git config --local user.password ${GITHUB_TOKEN}
 git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 
 git remote add upstream "$UPSTREAM_REPO"
-git fetch --tags upstream
+git fetch ${FETCH_ARGS} upstream
 git remote -v
 
 git checkout ${DOWNSTREAM_BRANCH}
@@ -47,7 +48,7 @@ git checkout ${DOWNSTREAM_BRANCH}
 #git commit sync-upstream-repo -m "Syncing upstream"
 #git push origin
 
-MERGE_RESULT=$(git merge upstream/${UPSTREAM_BRANCH} ${MERGE_ARGS})
+MERGE_RESULT=$(git merge ${MERGE_ARGS} upstream/${UPSTREAM_BRANCH})
 
 
 if [[ $MERGE_RESULT == "" ]] 
@@ -56,7 +57,7 @@ then
 elif [[ $MERGE_RESULT != *"Already up to date."* ]]
 then
   git commit -m "Merged upstream"  
-  git push origin ${DOWNSTREAM_BRANCH} ${PUSH_ARGS} || exit $?
+  git push ${PUSH_ARGS} origin ${DOWNSTREAM_BRANCH} || exit $?
 fi
 
 cd ..
