@@ -56,7 +56,8 @@ then
   exit 1
 elif [[ $MERGE_RESULT != *"Already up to date."* ]]
 then
-  git commit -m "Merged upstream"  
+  git commit -m "Merged upstream"
+  git push origin ${DOWNSTREAM_BRANCH} || exit $?
   git push ${PUSH_ARGS} origin ${DOWNSTREAM_BRANCH} || exit $?
 fi
 
