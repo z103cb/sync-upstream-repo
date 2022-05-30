@@ -17,6 +17,10 @@ inputs:
   token:
     description: GitHub Bot token
     required: true
+  fetch_args:
+    description: Git fetch arguments
+    required: false
+    default: ""
   merge_args:
     description: Git merge arguments
     required: false
@@ -34,6 +38,7 @@ runs:
     - ${{ inputs.upstream_branch }}
     - ${{ inputs.downstream_branch }}
     - ${{ inputs.token }}
+    - ${{ inputs.fetch_args }}
     - ${{ inputs.merge_args }}
     - ${{ inputs.push_args }}
 
