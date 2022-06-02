@@ -61,7 +61,7 @@ jobs:
 This action syncs your repo (merge changes from `remote`) at branch `main` with the upstream repo ``` https://github.com/dabreadman/go-web-proxy.git ``` every day on 1801 UTC.  
 Do note GitHub Action scheduled workflow usually face delay as it is pushed onto a queue, the delay is usually within 1 hour long.
 
-Note: This action will create a `sync-upstream-repo` file at root directory with timestamps of when the action is ran. This is to mitigate the hassle of GitHub disabling actions for a repo when inactivity was detected.
+Note: If `SPAWN_LOGS` is set to `true`, this action will create a `sync-upstream-repo` file at root directory with timestamps of when the action is ran. This is to mitigate the hassle of GitHub disabling actions for a repo when inactivity was detected.
 
 ## Development
 
