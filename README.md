@@ -30,6 +30,8 @@ env:
   MERGE_ARGS: ""
   # Optional push arguments
   PUSH_ARGS: ""
+  # Optional toggle to spawn time logs (keeps action active) 
+  SPAWN_LOGS: "false" # "true" or "false"
 
 # This runs every day on 1801 UTC
 on:
