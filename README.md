@@ -26,6 +26,8 @@ env:
   UPSTREAM_BRANCH: "main"
   # Optional, defaults to UPSTREAM_BRANCH
   DOWNSTREAM_BRANCH: ""
+  # Optional fetch arguments
+  FETCH_ARGS: ""
   # Optional merge arguments
   MERGE_ARGS: ""
   # Optional push arguments
@@ -49,12 +51,15 @@ jobs:
           upstream_branch: ${{ env.UPSTREAM_BRANCH }}
           downstream_branch: ${{ env.DOWNSTREAM_BRANCH }}
           token: ${{ env.WORKFLOW_TOKEN }}
+          fetch_args: ${{ env.FETCH_ARGS }}
           merge_args: ${{ env.MERGE_ARGS }}
           push_args: ${{ env.PUSH_ARGS }}
 ```
 
 This action syncs your repo (merge changes from `remote`) at branch `main` with the upstream repo ``` https://github.com/dabreadman/go-web-proxy.git ``` every day on 1801 UTC.  
 Do note GitHub Action scheduled workflow usually face delay as it is pushed onto a queue, the delay is usually within 1 hour long.
+
+Note: This action will create a `sync-upstream-repo` file at root directory with timestamps of when the action is ran. This is to mitigate the hassle of GitHub disabling actions for a repo when inactivity was detected.
 
 ## Development
 
