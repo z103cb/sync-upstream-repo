@@ -9,6 +9,7 @@ GITHUB_TOKEN=$4
 FETCH_ARGS=$5
 MERGE_ARGS=$6
 PUSH_ARGS=$7
+SPAWN_LOG=$8
 
 if [[ -z "$UPSTREAM_REPO" ]]; then
   echo "Missing \$UPSTREAM_REPO"
@@ -42,10 +43,14 @@ git remote -v
 
 git checkout ${DOWNSTREAM_BRANCH}
 
-echo -n "sync-upstream-repo https://github.com/dabreadman/sync-upstream-repo keeping CI alive. UNIX Time: " >> sync-upstream-repo
-date +"%s" >> sync-upstream-repo
-git add sync-upstream-repo
-git commit sync-upstream-repo -m "Syncing upstream"
+case ${SPAWN_LOG} in
+  (true)    echo -n "sync-upstream-repo https://github.com/dabreadman/sync-upstream-repo keeping CI alive."\
+            "UNIX Time: " >> sync-upstream-repo
+            date +"%s" >> sync-upstream-repo
+            git add sync-upstream-repo
+            git commit sync-upstream-repo -m "Syncing upstream"
+esac
+
 git push origin
 
 MERGE_RESULT=$(git merge ${MERGE_ARGS} upstream/${UPSTREAM_BRANCH})
