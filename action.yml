@@ -20,7 +20,7 @@ inputs:
   token:
     description: GitHub Bot token
     required: true
-    default: ${{ secrets.GITHUB_TOKEN }}
+    default: ${{ github.token }}
   merge_strategy:
     description: Merge strategy, controls which git operation (rebase or merge) will be used to synch with upstream. The values allowed are either "rebase" or "merge", with "rebase" being the default.
     required: false
