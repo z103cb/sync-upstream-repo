@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -ex
 
 readonly GIT_REPO_REGEX="^(https|git)(:\/\/|@)([^\/:]+)[\/:]([^\/:]+)\/(.+)(.git)*$"
 UPSTREAM_REPO_URL=${1}
@@ -41,6 +41,25 @@ function apply_merge_strategy() {
     do_merge
   else
     echo "Unknown merge strategy: $MERGE_STRATEGY"
+    exit 1
+  fi
+}
+
+function detect_release_branch_change() {
+  if [[ ${DOWNSTREAM_BRANCH} != "release" ]]; then
+    echo "Detecting release branches supported only if downstream branch name is: 'release'"
+    return
+  fi
+  # get commit SHA for origin/release branch
+  local origin_release_commit=(`git ls-remote --heads --refs origin refs/heads/release | awk '{print $1}'`)
+  echo "ORIGIN_RELEASE_COMMIT=${origin_release_commit}"
+  # get the commit SHA for the latest release branch
+  local upstream_release_commit=(`git ls-remote --heads --refs upstream | grep -E refs/heads/releases/20 | awk '{print $2,$1}' | sort -rn -k20,25 -k26,26 | head -n 1 | awk '{print $2}'`)
+  echo "UPSTREAM_RELEASE_COMMIT=${upstream_release_commit}"
+  if [[ "${origin_release_commit}" == "${upstream_release_commit}" ]];then
+    echo "Latest release commits match"
+  else 
+    echo "Latest release commits do not match. It is time to switch the branch"
     exit 1
   fi
 }
@@ -133,8 +152,10 @@ else
 fi
 
 
-echo "Pushing changes to origin"
-git push ${PUSH_ARGS} --follow-tags origin ${DOWNSTREAM_BRANCH}
+echo "Pushing changes to origin..."
+git push -u ${PUSH_ARGS} --follow-tags origin ${DOWNSTREAM_BRANCH}
+echo "Detecting changes in release branches..."
+detect_release_branch_change
 
 cd ..
 rm -rf work
