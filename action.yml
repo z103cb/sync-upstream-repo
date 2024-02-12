@@ -46,9 +46,9 @@ runs:
   using: "docker"
   image: "Dockerfile"
   args:
-    - ${{ inputs.upstream_repo }}
+    - ${{ inputs.upstream_repo_url }}
     - ${{ inputs.upstream_branch }}
-    - ${{ inputs.downstream_repo }}
+    - ${{ inputs.downstream_repo_url }}
     - ${{ inputs.downstream_branch }}
     - ${{ inputs.token }}
     - ${{ inputs.merge_strategy }}
