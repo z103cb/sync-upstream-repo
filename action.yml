@@ -25,38 +25,32 @@ inputs:
     description: Merge strategy, controls which git operation (rebase or merge) will be used to synch with upstream. The values allowed are either "rebase" or "merge", with "rebase" being the default.
     required: false
     default: "release"
-  fetch_args:
-    description: Git fetch arguments
+  spawn_logs:
+    description: Create a marker commit in the downstream branch to signal creation of commit. The allowed values are either `true` or `false`, with default being false.
     required: false
-    default: ""
-  rebase_args:
-    description: Git rebase arguments
-    required: false
-    default: ""
-  push_args:
-    description: Git push arguments
-    required: false
-    default: ""
-  merge_args:
-    description: Git merge arguments
-    required: false
-    default: ""  
-
+    default: "false"
+  
 runs:
   using: "docker"
   image: "Dockerfile"
   args:
+    - "--mode"
+    - ${{ inputs.mode }}
+    - "--upstream-repo-url"
     - ${{ inputs.upstream_repo_url }}
+    - "--upstream-branch"
     - ${{ inputs.upstream_branch }}
+    - "--downstream-repo-url"
     - ${{ inputs.downstream_repo_url }}
+    - "--downstream-branch"
     - ${{ inputs.downstream_branch }}
+    - "--token"
     - ${{ inputs.token }}
+    - "--merge-strategy"
     - ${{ inputs.merge_strategy }}
-    - ${{ inputs.fetch_args }}
-    - ${{ inputs.rebase_args }}
-    - ${{ inputs.push_args }}
-    - ${{ inputs.merge_args }}
-
+    - "--spawn-logs"
+    - ${{ inputs.spawn_logs}}
+  
 branding:
   icon: "git-merge"
   color: "blue"
