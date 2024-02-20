@@ -3,6 +3,12 @@ description: Syncs and merges your current repository with the upstream reposito
 author: Dabreadman
 
 inputs:
+  mode:
+    description: > 
+        "The mode the action will run on. There only two mode supported, "branch-to-branch\": all the commits from the upstream branch will be synched into the downstream branch using the defined merge strategy
+        "release-following" : detects if a newer branch matching the pattern defined in UPSTREAM_BRANCH is created and renames the current DOWNSTREAM_BRANCH 
+        to the previous branch name and continues to synch the commits from the new upstream branch to DOWNSTREAM_BRANCH"
+    required: true
   upstream_repo_url:
     description: URL of GitHub public upstream repo
     required: true
